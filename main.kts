@@ -3,14 +3,105 @@
 println("UW Homework: Simple Kotlin")
 
 // write a "whenFn" that takes an arg of type "Any" and returns a String
-
+fun whenFn(arg: Any): String {
+    if (arg == "Hello") {
+        return "World"
+    } else if (arg is String) {
+        return "I don't understand"
+    } else if ( arg == 0 ) {
+        return "zero"
+    } else if ( arg == 1 ) {
+        return "one"
+    } else if ( arg in 2..10 ) {
+        return "low number"
+    } else if (arg is Int) {
+        return "a number"
+    } else {
+        return "I don't understand"
+    }
+}
 // write an "add" function that takes two Ints, returns an Int, and adds the values
+fun add(int1: Int, int2: Int): Int {
+    return int1 + int2
+}
+
 // write a "sub" function that takes two Ints, returns an Int, and subtracts the values
+fun sub(int1 : Int, int2 : Int) : Int {
+    return int1 - int2
+}
+
 // write a "mathOp" function that takes two Ints and a function (that takes two Ints and returns an Int), returns an Int, and applies the passed-in-function to the arguments
+fun mathOp(int1: Int, int2: Int, op: (num1 : Int, num2 : Int) -> Int) : Int {
+    return op(int1, int2)
+}
 
 // write a class "Person" with first name, last name and age
+class Person(var firstName: String, var lastName: String, var age: Int) {
+    public val debugString: String = "[Person firstName:" + firstName + " lastName:" + lastName + " age:45]";
+    fun equals(other: Person): Boolean {
+        if (other.firstName == firstName && other.lastName == lastName && other.age == age) {
+            return true;
+        }
+        return false;
+    }
+
+    override fun hashCode(): Int {
+        var result: Int = 17;
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + age;
+        result = 31 * result + firstName.hashCode();
+        return result;
+    }
+}
 
 // write a class "Money"
+class Money(amount: Int, currency: String) {
+    var amount: Int = 0
+        set(num: Int) {
+            if (num > 0) {
+                amount = num
+            }
+        }
+    var currency: String = ""
+        set(cur: String) {
+            if (cur == "USD" || cur == "EUR" || cur == "CAN" || cur == "GBP") {
+                currency = cur
+            }
+        }
+    fun convert(typeTo: String) : Money {
+        if (currency == "USD") {
+            if (amount == 10) {
+                if (typeTo == "GBP") {
+                    return Money(5, typeTo)
+                } else if (typeTo == "EUR") {
+                    return Money(15, typeTo)
+                }
+            } else if (amount == 12) {
+                if (typeTo == "CAN") {
+                    return Money(15, typeTo)
+                }
+            }
+        } else if (typeTo == "USD") {
+            if (currency == "GBP" && amount == 5) {
+                return Money (10, typeTo)
+            } else if (currency == "EUR" && amount == 15) {
+                return Money(10, typeTo)
+            } else if (currency == "CAN" && amount == 15) {
+                return Money(12, typeTo)
+            }
+        }
+        return Money(0, typeTo)
+    }
+
+    operator fun plus(other: Money) : Money {
+        var temp = other
+        if (this.currency != other.currency) {
+            temp = other.convert(currency)
+        }
+        return Money(this.amount + temp.amount, this.currency)
+    }
+}
+
 
 // ============ DO NOT EDIT BELOW THIS LINE =============
 
